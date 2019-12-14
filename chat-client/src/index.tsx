@@ -1,7 +1,11 @@
 import React from "react"
 import { render } from "react-dom"
-import { ThemeProvider, CSSReset, Box } from "@chakra-ui/core"
+import { ThemeProvider, CSSReset, Box, Heading } from "@chakra-ui/core"
 import styled from "@emotion/styled"
+import { AppStore } from "./AppStore"
+import { App } from "./App"
+import { Provider } from "urql"
+import { gqlClient } from "./graphql"
 // import { layout, system } from "styled-system"
 
 const Layout = styled(Box)`
@@ -9,15 +13,22 @@ const Layout = styled(Box)`
   margin: 0 auto;
 `
 
-const App = () => {
+const EntryPoint = () => {
   return (
     <ThemeProvider>
       <CSSReset />
       <Layout>
-        <div>hello</div>
+        <Provider value={gqlClient}>
+          <Box>
+            <Heading>Chat</Heading>
+          </Box>
+          <AppStore>
+            <App />
+          </AppStore>
+        </Provider>
       </Layout>
     </ThemeProvider>
   )
 }
 
-render(<App />, document.querySelector("#root"))
+render(<EntryPoint />, document.querySelector("#root"))
